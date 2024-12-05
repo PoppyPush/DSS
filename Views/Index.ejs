@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signature System</title>
+</head>
+<body>
+    <h1>Digital Signature System</h1>
+    <form action="/sign" method="POST">
+        <textarea name="message" placeholder="Enter your message" required></textarea>
+        <textarea name="privateKey" placeholder="Enter your private key" required></textarea>
+        <button type="submit">Sign</button>
+    </form>
+    <% if (signature) { %>
+        <h3>Signature:</h3>
+        <p><%= signature %></p>
+    <% } %>
+</body>
+</html>
