@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Signature</title>
+</head>
+<body>
+    <h1>Verify Digital Signature</h1>
+    <form action="/verify" method="POST">
+        <textarea name="message" placeholder="Enter the message" required></textarea>
+        <textarea name="signature" placeholder="Enter the signature" required></textarea>
+        <textarea name="publicKey" placeholder="Enter the public key" required></textarea>
+        <button type="submit">Verify</button>
+    </form>
+    <% if (isValid !== undefined) { %>
+        <h3>Verification Result:</h3>
+        <p><%= isValid ? "Valid Signature" : "Invalid Signature" %></p>
+    <% } %>
+</body>
+</html>
