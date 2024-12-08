@@ -1,18 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const dssRoutes = require('./routes/dss');
+const express = require("express");
+const bodyParser = require("body-parser");
+const dssRoutes = require("./routes/dss");
 
 const app = express();
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('public'));
+app.set("view engine", "ejs");
 
-// Template Engine
-app.set('view engine', 'ejs');
+app.get("/", (req, res) => {
+    res.render("index");
+});
 
-// Routes
-app.use('/', dssRoutes);
+app.use("/dss", dssRoutes);
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
