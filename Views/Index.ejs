@@ -3,18 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Signature System</title>
+    <title>DSS - Chữ ký số</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Digital Signature System</h1>
-    <form action="/sign" method="POST">
-        <textarea name="message" placeholder="Enter your message" required></textarea>
-        <textarea name="privateKey" placeholder="Enter your private key" required></textarea>
-        <button type="submit">Sign</button>
+    <h1>Hệ thống chữ ký số</h1>
+    <form id="signForm">
+        <h2>Tạo chữ ký</h2>
+        <textarea id="message" placeholder="Nhập thông điệp"></textarea>
+        <input id="privateKey" type="text" placeholder="Khóa riêng">
+        <button type="button" onclick="sign()">Tạo chữ ký</button>
     </form>
-    <% if (signature) { %>
-        <h3>Signature:</h3>
-        <p><%= signature %></p>
-    <% } %>
+
+    <form id="verifyForm">
+        <h2>Xác minh chữ ký</h2>
+        <textarea id="verifyMessage" placeholder="Nhập thông điệp"></textarea>
+        <input id="signature" type="text" placeholder="Chữ ký">
+        <input id="publicKey" type="text" placeholder="Khóa công khai">
+        <button type="button" onclick="verify()">Xác minh</button>
+    </form>
+
+    <script>
+        async function sign() {
+            const message = document.getElementById("message").value;
+            const privateKey = JSON.parse(document.getElementById("privateKey").value);
+            const response = await fetch("/dss/sign", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message, privateKey })
+            });
+            const data = await response.json();
+            alert("Chữ ký: " + data.signature);
+        }
+
+        async function verify() {
+            const message = document.getElementById("verifyMessage").value;
+            const signature = document.getElementById("signature").value;
+            const publicKey = JSON.parse(document.getElementById("publicKey").value);
+            const response = await fetch("/dss/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message, signature, publicKey })
+            });
+            const data = await response.json();
+            alert("Kết quả xác minh: " + data.isValid);
+        }
+    </script>
 </body>
 </html>
