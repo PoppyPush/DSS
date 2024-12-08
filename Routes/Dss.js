@@ -1,34 +1,19 @@
-const express = require('express');
-const crypto = require('crypto');
+const express = require("express");
 const router = express.Router();
+const { signMessage, verifyMessage } = require("../utils/crypto");
 
-// Tạo chữ ký số
-router.get('/', (req, res) => {
-    res.render('index');
-});
-
-router.post('/sign', (req, res) => {
+// Endpoint tạo chữ ký
+router.post("/sign", (req, res) => {
     const { message, privateKey } = req.body;
-
-    // Tạo chữ ký
-    const signer = crypto.createSign('SHA256');
-    signer.update(message);
-    signer.end();
-
-    const signature = signer.sign(privateKey, 'hex');
-    res.render('index', { message, signature });
+    const signature = signMessage(message, privateKey);
+    res.json({ signature });
 });
 
-// Xác minh chữ ký
-router.post('/verify', (req, res) => {
+// Endpoint xác minh chữ ký
+router.post("/verify", (req, res) => {
     const { message, signature, publicKey } = req.body;
-
-    const verifier = crypto.createVerify('SHA256');
-    verifier.update(message);
-    verifier.end();
-
-    const isValid = verifier.verify(publicKey, signature, 'hex');
-    res.render('verify', { message, signature, publicKey, isValid });
+    const isValid = verifyMessage(message, signature, publicKey);
+    res.json({ isValid });
 });
 
 module.exports = router;
