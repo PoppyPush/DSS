@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { signMessage, verifyMessage } = require("../utils/crypto");
+const { signMessage, verifyMessage } = require("../crypto/crypto");
 
 // Endpoint tạo chữ ký
 router.post("/sign", (req, res) => {
